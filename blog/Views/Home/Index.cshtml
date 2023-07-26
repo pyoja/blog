@@ -35,7 +35,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="confirmPassword">비밀번호 확인</label>
-                                <input type="password" class="form-control" id="confirmPassword" placeholder="비밀번호를 확인해주세요.">
+                                <input type="password" class="form-control" id="confirmPassword" placeholder="비밀번호를 확인해주세요">
                             </div>
                         </form>
                     </div>
@@ -53,7 +53,9 @@
     <script>
     $(document).ready(function() {
 
-        $("#submitRegister").on('click', function() {
+        $("#submitRegister").on('click', function(e) {
+            e.preventDefault();
+
             var name = $("#name").val();
             var username = $("#username").val();
             var password = $("#password").val();
@@ -62,27 +64,28 @@
             if (password !== confirmPassword) {
                 alert("비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 시도해 주세요.");
             } else {
-                var data = {
-                    name: name,
-                    username: username,
-                    password: password
+                var userData = {
+                    Name: name,
+                    Id: username,
+                    Password: password
                 };
 
-                // 서버로 회원가입 요청을 보냅니다.
                 $.ajax({
-                    url: "@Url.Action("Register", "Account")",
-                    type: "POST",
-                    data: data,
-                    success: function(response) {
-                        if (response.success) {
-                            alert("회원가입이 완료되었습니다. 로그인하세요.");
+                    type: 'POST',
+                    url: '@Url.Action("Register", "Account")',
+                    contentType: 'application/json;charset=utf-8',
+                    data: JSON.stringify(userData),
+                    success: function (response) {
+                        if (response.result === 'success') {
+                            alert('회원가입이 완료되었습니다.');
                             $("#registerModal").modal('hide');
+                            window.location.href = '/'; // 메인 페이지로 리디렉션
                         } else {
-                            alert("회원가입 도중 오류가 발생했습니다: " + response.errorMessage);
+                            alert('회원가입에 실패했습니다. 다시 시도해주세요.');
                         }
                     },
-                    error: function() {
-                        alert("서버와 통신 중 오류가 발생했습니다. 다시 시도해주세요.");
+                    error: function () {
+                        alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
                     }
                 });
             }
