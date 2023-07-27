@@ -1,6 +1,10 @@
 ﻿using blog.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
+
 
 namespace blog.Data
 {
