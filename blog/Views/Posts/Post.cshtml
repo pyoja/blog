@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Post List";
+}
+
+<h2>게시물 목록</h2>
+
+<div>
+    <p>
+        @Html.ActionLink("새 게시물 작성", "Create", "Posts", new { @class = "btn btn-default" })
+    </p>
+</div>
+
+@foreach (var post in Model)
+{
+    <article>
+        <h4>@Html.DisplayFor(model => post.Title)</h4>
+        <div>
+            <p>
+                작성일: @Html.DisplayFor(model => post.CreatedDate) |
+                작성자: @Html.DisplayFor(model => post.Author)
+            </p>
+            <p>@Html.DisplayFor(model => post.Content)</p>
+            <p>
+                @Html.ActionLink("자세히 보기", "Details", "Posts", new { id = post.PostId }) |
+                @Html.ActionLink("수정", "Edit", "Posts", new { id = post.PostId }) |
+                @Html.ActionLink("삭제", "Delete", "Posts", new { id = post.PostId })
+            </p>
+        </div>
+    </article>
+}

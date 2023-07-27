@@ -73,21 +73,24 @@ namespace blog.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model)
+        public ActionResult Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
 
-            var user = _context.Users.FirstOrDefault(u => u.Id == model.Id && u.Password == model.Password);
+            var user = _userManager.Find(model.Id, model.Password);
             if (user == null)
             {
                 ModelState.AddModelError("", "ID 또는 비밀번호가 잘못되었습니다.");
                 return View(model);
             }
+
             // 로그인 성공한 경우, 인증 및 쿠키 설정
             FormsAuthentication.SetAuthCookie(model.Id, true);
+            // 로그인에 성공하면 PostsController의 Index 액션으로 이동
             return RedirectToAction("Index", "Posts");
         }
+
 
     }
 }
