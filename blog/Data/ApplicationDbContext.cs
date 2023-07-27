@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿// Data/ApplicationDbContext.cs
+
+using System.Data.Entity;
 using blog.Models;
 
 namespace blog.Data
@@ -6,7 +8,7 @@ namespace blog.Data
     public class ApplicationDbContext : DbContext
     {
         // 기본 생성자 추가
-        public ApplicationDbContext() : base("PostConnection")
+        public ApplicationDbContext() : base("name=_db_Blog")
         {
         }
 

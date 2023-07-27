@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class PostDB : DbMigration
+    public partial class InitialMigration : DbMigration
     {
         public override void Up()
         {
@@ -29,9 +29,8 @@
                         No = c.Int(nullable: false, identity: true),
                         Id = c.String(),
                         Password = c.String(),
-                        Name = c.String(),
-                        RegDate = c.DateTime(nullable: false),
-                        DelState = c.Byte(nullable: false),
+                        Reg_date = c.DateTime(nullable: false),
+                        Del_state = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.No);
             

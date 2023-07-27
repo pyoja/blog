@@ -1,6 +1,9 @@
-﻿using System;
+﻿// controller/AccountController.cs
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using blog.Data;
@@ -25,29 +28,35 @@ namespace blog.Controllers
 
         // POST: Register
         [HttpPost]
-        public JsonResult Register(User model)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(User model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                // 회원 가입 처리 코드 작성
-                _context.Users.Add(new User
+                if (ModelState.IsValid)
                 {
-                    Name = model.Name,
-                    Id = model.Id,
-                    Password = model.Password,
-                    RegDate = DateTime.Now,
-                    DelState = 0
-                });
+                    _context.Users.Add(new User
+                    {
+                        Id = model.Id,
+                        Password = model.Password,
+                        Reg_date = DateTime.Now,
+                        Del_state = 0
+                    });
 
-                _context.SaveChanges();
-
-                return Json(new { result = "success" });
+                    await _context.SaveChangesAsync();
+                    return Json(new { success = true });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return Json(new { result = "fail" });
+                return Json(new { success = false, message = "Error: " + ex.Message });
             }
+
+            return Json(new { success = false, message = "유효하지 않은 입력입니다" });
         }
+
+
+
 
         // GET: All Users
         public IEnumerable<User> GetAllUsers()

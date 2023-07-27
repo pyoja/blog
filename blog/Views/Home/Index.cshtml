@@ -1,4 +1,5 @@
-﻿@{
+﻿<!-- Views/Home/Index.cshtml -->
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -21,6 +22,7 @@
                     </div>
                     <div class="modal-body">
                         <form id="registerForm">
+                            @Html.AntiForgeryToken()
                             <div class="form-group">
                                 <label for="name">이름</label>
                                 <input type="text" class="form-control" id="name" placeholder="이름을 입력하세요">
@@ -51,46 +53,44 @@
 
 @section Scripts {
     <script>
-    $(document).ready(function() {
+   $("#submitRegister").on('click', function(e) {
+    e.preventDefault();
 
-        $("#submitRegister").on('click', function(e) {
-            e.preventDefault();
+    var name = $("#name").val();
+    var username = $("#username").val();
+    var password = $("#password").val();
+    var confirmPassword = $("#confirmPassword").val();
+    var token = $('input[name="__RequestVerificationToken"]', '#registerForm').val();
 
-            var name = $("#name").val();
-            var username = $("#username").val();
-            var password = $("#password").val();
-            var confirmPassword = $("#confirmPassword").val();
+    if (password !== confirmPassword) {
+        alert("비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 시도해 주세요.");
+    } else {
+        var userData = {
+            Name: name,
+            Id: username,
+            Password: password,
+            __RequestVerificationToken: token
+        };
 
-            if (password !== confirmPassword) {
-                alert("비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 시도해 주세요.");
-            } else {
-                var userData = {
-                    Name: name,
-                    Id: username,
-                    Password: password
-                };
-
-                $.ajax({
-                    type: 'POST',
-                    url: '@Url.Action("Register", "Account")',
-                    contentType: 'application/json;charset=utf-8',
-                    data: JSON.stringify(userData),
-                    success: function (response) {
-                        if (response.result === 'success') {
-                            alert('회원가입이 완료되었습니다.');
-                            $("#registerModal").modal('hide');
-                            window.location.href = '/'; // 메인 페이지로 리디렉션
-                        } else {
-                            alert('회원가입에 실패했습니다. 다시 시도해주세요.');
-                        }
-                    },
-                    error: function () {
-                        alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
-                    }
-                });
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Register", "Account")",
+            data: userData,
+            success: function (response) {
+                if (response.success === true) {
+                    alert('회원가입이 완료되었습니다.');
+                    $("#registerModal").modal('hide');
+                    window.location.href = '/'; // 메인 페이지로 리디렉션
+                } else {
+                    alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+                }
+            },
+            error: function () {
+                alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
             }
         });
+    }
+});
 
-    });
     </script>
 }
