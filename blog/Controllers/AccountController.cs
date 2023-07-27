@@ -10,6 +10,13 @@ namespace blog.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly ApplicationDbContext _context;
+
+        public AccountController()
+        {
+            _context = new ApplicationDbContext();
+        }
+
         // GET: Account
         public ActionResult Index()
         {
@@ -20,10 +27,10 @@ namespace blog.Controllers
         [HttpPost]
         public JsonResult Register(User model)
         {
-            // 회원 가입 처리 코드 작성
-            using (var context = new ApplicationDbContext())
+            if (ModelState.IsValid)
             {
-                context.Users.Add(new User
+                // 회원 가입 처리 코드 작성
+                _context.Users.Add(new User
                 {
                     Name = model.Name,
                     Id = model.Id,
@@ -32,19 +39,20 @@ namespace blog.Controllers
                     DelState = 0
                 });
 
-                context.SaveChanges();
-            }
+                _context.SaveChanges();
 
-            return Json(new { result = "success" });
+                return Json(new { result = "success" });
+            }
+            else
+            {
+                return Json(new { result = "fail" });
+            }
         }
 
         // GET: All Users
         public IEnumerable<User> GetAllUsers()
         {
-            using (var context = new ApplicationDbContext())
-            {
-                return context.Users.ToList();
-            }
+            return _context.Users.ToList();
         }
     }
 }
