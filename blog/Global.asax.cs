@@ -15,7 +15,11 @@ namespace blog
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+<<<<<<< HEAD
             Database.SetInitializer<ApplicationDbContext>(new CreateDatabaseIfNotExists<ApplicationDbContext>());
+=======
+            Database.SetInitializer<AppDbContext>(new CreateDatabaseIfNotExists<AppDbContext>());
+>>>>>>> adeadff366e31d24dcdfb3092236b73f076c2a7c
         }
     }
 }
