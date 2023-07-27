@@ -3,16 +3,16 @@ using System.Data.Entity;
 
 namespace blog.Models
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class AppUserDbContext : IdentityDbContext<AppUser>
     {
-        public ApplicationDbContext()
+        public AppUserDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
 
-        public static ApplicationDbContext Create()
+        public static AppUserDbContext Create()
         {
-            return new ApplicationDbContext();
+            return new AppUserDbContext();
         }
     }
 }

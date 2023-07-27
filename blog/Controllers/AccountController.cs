@@ -14,11 +14,11 @@ namespace blog.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
 
         public AccountController()
         {
-            _context = new ApplicationDbContext();
+            _context = new AppDbContext();
         }
 
         // GET: Account

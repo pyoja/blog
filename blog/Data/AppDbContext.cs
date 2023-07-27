@@ -5,10 +5,10 @@ using blog.Models;
 
 namespace blog.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class AppDbContext : DbContext
     {
         // 기본 생성자 추가
-        public ApplicationDbContext() : base("name=_db_Blog")
+        public AppDbContext() : base("name=_db_Blog")
         {
         }
 

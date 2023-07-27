@@ -2,7 +2,7 @@
 
 namespace blog.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class AppUser : IdentityUser
     {
         // 사용자 정의 속성 추가 가능
     }
