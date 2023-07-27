@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using blog.Data;
 using blog.Models;
 
@@ -63,5 +64,30 @@ namespace blog.Controllers
         {
             return _context.Users.ToList();
         }
+
+        // 로그인
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == model.Id && u.Password == model.Password);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "ID 또는 비밀번호가 잘못되었습니다.");
+                return View(model);
+            }
+            // 로그인 성공한 경우, 인증 및 쿠키 설정
+            FormsAuthentication.SetAuthCookie(model.Id, true);
+            return RedirectToAction("Index", "Posts");
+        }
+
     }
 }
